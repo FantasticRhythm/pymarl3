@@ -15,7 +15,7 @@ class SelfAttention(nn.Module):
 
     def forward(self, x):
         b, t, hin = x.size()
-        assert hin == self.input_size, 'Input size {} should match {}'.format(hin, self.input_size)
+        assert hin == self.input_size, f'Input size {{hin}} should match {{self.input_size}}'
         
         h = self.heads 
         e = self.emb_size

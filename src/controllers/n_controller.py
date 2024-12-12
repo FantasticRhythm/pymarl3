@@ -22,7 +22,17 @@ class NMAC(BasicMAC):
         return chosen_actions
 
     def forward(self, ep_batch, t, test_mode=False):
+        if test_mode:
+            self.agent.eval()
+        
         agent_inputs = self._build_inputs(ep_batch, t)
-        # avail_actions = ep_batch["avail_actions"][:, t]
-        agent_outs, self.hidden_states = self.agent(agent_inputs, self.hidden_states)
+        avail_actions = ep_batch["avail_actions"][:, t]
+
+        device = self.agent.fc1.weight.device
+        agent_inputs = agent_inputs.to(device)
+        self.hidden_states = self.hidden_states.to(device)
+
+        agent_outs, agent_inter, self.hidden_state = self.agent(agent_inputs, self.hidden_states)
+        # agent_outs, agent_inter, self.hidden_state,self.q_self = self.agent(agent_inputs, self.hidden_states)
+        self.inter = agent_inter
         return agent_outs

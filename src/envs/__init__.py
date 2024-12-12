@@ -3,6 +3,7 @@ import sys
 import os
 
 from .multiagentenv import MultiAgentEnv
+from .matrix_game import OneStepMatrixGame
 
 try:
     smac = True
@@ -41,4 +42,9 @@ if smacv2:
 else:
     print("SMAC V2 is not supported...")
 
+REGISTRY["one_step_matrix_game"] = partial(env_fn, env=OneStepMatrixGame)
+
+if sys.platform == "linux":
+    os.environ.setdefault("SC2PATH", "~/StarCraftII")
 print("Supported environments:", REGISTRY)
+

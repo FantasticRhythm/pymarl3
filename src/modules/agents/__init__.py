@@ -9,6 +9,8 @@ from .gnn_rnn_agent import GnnRNNAgent
 from .n_rnn_agent import NRNNAgent
 from .rnn_agent import RNNAgent
 from .updet_agent import UPDeT
+from .atten_rnn_agent import ATTRNNAgent
+from .hpn_atten_agent import ATTRNNAgent as HPN_ATTRNNAgent
 
 REGISTRY["rnn"] = RNNAgent
 REGISTRY["n_rnn"] = NRNNAgent
@@ -19,3 +21,5 @@ REGISTRY["deepset_hyper_rnn"] = DeepSetHyperRNNAgent
 REGISTRY["updet_agent"] = UPDeT
 REGISTRY["asn_rnn"] = AsnRNNAgent
 REGISTRY["gnn_rnn"] = GnnRNNAgent
+REGISTRY["att_rnn"] = ATTRNNAgent
+REGISTRY["hpn_att_rnn"] = HPN_ATTRNNAgent

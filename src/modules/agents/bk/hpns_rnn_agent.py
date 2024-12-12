@@ -79,11 +79,11 @@ class HPNS_RNNAgent(nn.Module):
             )  # output shape: ally_feats_dim * rnn_hidden_dim + rnn_hidden_dim + 1, for 'rescue actions'
             self.unify_output_heads_rescue = Merger(self.n_heads, 1)
         else:
-                self.hyper_ally = nn.Sequential(
-                    nn.Linear(self.ally_feats_dim, args.hpn_hyper_dim),
-                    nn.ReLU(inplace=True),
-                    nn.Linear(args.hpn_hyper_dim, self.ally_feats_dim * self.rnn_hidden_dim * self.n_heads)
-                )  # output shape: ally_feats_dim * rnn_hidden_dim
+            self.hyper_ally = nn.Sequential(
+                nn.Linear(self.ally_feats_dim, args.hpn_hyper_dim),
+                nn.ReLU(inplace=True),
+                nn.Linear(args.hpn_hyper_dim, self.ally_feats_dim * self.rnn_hidden_dim * self.n_heads)
+            )  # output shape: ally_feats_dim * rnn_hidden_dim
 
         self.unify_input_heads = Merger(self.n_heads, self.rnn_hidden_dim)
         self.rnn = nn.GRUCell(self.rnn_hidden_dim, self.rnn_hidden_dim)
@@ -144,7 +144,6 @@ class HPNS_RNNAgent(nn.Module):
         embedding_enemies = th.matmul(enemy_feats_t.unsqueeze(1), fc1_w_enemy).view(
             bs * self.n_agents, self.n_enemies, self.n_heads, self.rnn_hidden_dim
         )  # [bs * n_agents, n_enemies, n_heads, rnn_hidden_dim]
-
         embedding_enemies = embedding_enemies.sum(dim=1, keepdim=False)  # [bs * n_agents, n_heads, rnn_hidden_dim]
 
         # (4) Ally features
@@ -157,8 +156,7 @@ class HPNS_RNNAgent(nn.Module):
         else:
             # [bs * n_agents * n_allies, ally_fea_dim, rnn_hidden_dim * head]
             fc1_w_ally = hyper_ally_out.view(-1, self.ally_feats_dim, self.rnn_hidden_dim * self.n_heads)
-        # [bs * n_agents * n_allies, 1, ally_fea_dim] * [bs * n_agents * n_allies, ally_fea_dim, n_heads* rnn_hidden_dim] 
-        # = [bs * n_agents * n_allies, 1, n_heads*rnn_hidden_dim]
+        # [bs * n_agents * n_allies, 1, ally_fea_dim] * [bs * n_agents * n_allies, ally_fea_dim, n_heads* rnn_hidden_dim] = [bs * n_agents * n_allies, 1, n_heads*rnn_hidden_dim]
         embedding_allies = th.matmul(ally_feats_t.unsqueeze(1), fc1_w_ally).view(
             bs * self.n_agents, self.n_allies, self.n_heads, self.rnn_hidden_dim
         )  # [bs * n_agents, n_allies, head, rnn_hidden_dim]

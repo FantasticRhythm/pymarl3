@@ -180,7 +180,7 @@ class NQLearner:
 
         self.train_t += 1
         self.avg_time += (time.time() - start_time - self.avg_time) / self.train_t
-        print("Avg cost {} seconds".format(self.avg_time))
+        # print("Avg cost {} seconds".format(self.avg_time))
 
         if (episode_num - self.last_target_update_episode) / self.args.target_update_interval >= 1.0:
             self._update_targets()
