@@ -52,6 +52,6 @@ run: "default"
 thread_num: 12
 enable_parallel_computing: False
 
-cpu_inference: True
-#cpu_inference: False
-asn_hidden_size: 32 # 64
+# cpu_inference: True
+cpu_inference: False
+# asn_hidden_size: 32 # 64
